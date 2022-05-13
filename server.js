@@ -36,6 +36,21 @@ const BookType = new GraphQLObjectType ({
         id: { type: GraphQLNonNull(GraphQLInt) },
         name: { type: GraphQLNonNull(GraphQLString) },
         authorId: { type: GraphQLNonNull(GraphQLInt) },
+        author: { 
+            type: AuthorType,
+            resolve: (book)=>{
+                return authors.find(author => author.id === book.authorId)
+            }
+         }
+    })
+})
+
+const AuthorType = new GraphQLObjectType ({
+    name: 'Author',
+    description: 'This is an author',
+    fields: ()=>({
+        id: { type: GraphQLNonNull(GraphQLInt) },
+        name: { type: GraphQLNonNull(GraphQLString) },
     })
 })
 
