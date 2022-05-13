@@ -53,6 +53,10 @@ const RootQueryType = new GraphQLObjectType ({
     })
 })
 
+const schema = new GraphQLSchema({
+    query: RootQueryType
+})
+
 app.use('/graphql', expressGraphQL({
     schema: schema,
     graphiql: true
