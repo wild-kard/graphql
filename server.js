@@ -36,6 +36,8 @@ const BookType = new GraphQLObjectType ({
         id: { type: GraphQLNonNull(GraphQLInt) },
         name: { type: GraphQLNonNull(GraphQLString) },
         authorId: { type: GraphQLNonNull(GraphQLInt) },
+        //below is the magic query that signifies the power of GraphQL as a normal query for the below information would require multiple queries 
+        //to obtain the list of books for each author independently. As well, it would return additional unnecessary information as well. 
         author: { 
             type: AuthorType,
             resolve: (book)=>{
@@ -64,6 +66,16 @@ const RootQueryType = new GraphQLObjectType ({
     name: 'Query',
     description: 'Root Query',
     fields: () => ({
+        book: {
+            type: BookType,
+            description: 'A single Book',
+            args: {
+
+                id: { type: GraphQLInt }
+            },
+            //below is where you would query the db for books if you had one
+            resolve: (parent, args)=> books.find(book => book.id === args.id)
+        },
         books: {
             type: new GraphQLList(BookType),
             description: 'List of all Books',
@@ -76,6 +88,7 @@ const RootQueryType = new GraphQLObjectType ({
             //below is where you would query the db for books if you had one
             resolve: ()=> authors
         }
+
     })
 })
 
